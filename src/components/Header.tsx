@@ -5,7 +5,6 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react'
-import ToggleTheme from './ToggleTheme'
 import Layout from './Layout'
 
 const NavBar = (): JSX.Element => {
