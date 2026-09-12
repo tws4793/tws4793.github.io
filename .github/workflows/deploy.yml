@@ -1,29 +1,63 @@
 name: Deploy
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+# peaceiris/actions-gh-pages pushes a commit to gh-pages, so the job needs
+# write access to repository contents.
+permissions:
+  contents: write
+
+# A superseded deploy is never worth finishing.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
 jobs:
-  deploy-gh-pages:
-    name: deploy
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Check out
+        uses: actions/checkout@v4
+
+      # Must precede setup-node: the cache step resolves the Yarn cache
+      # directory by invoking yarn, and without corepack that would be the
+      # runner's bundled Yarn 1 rather than the version pinned in
+      # package.json.
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: "16.x"
-      - name: Install Dependencies
-        run: npm install
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Install
+        run: yarn install --immutable
+
+      - name: Check formatting
+        run: yarn format:check
+
+      # Type errors should fail the deploy, so this runs as its own step
+      # rather than hiding inside the build script.
+      - name: Type check
+        run: yarn typecheck
+
       - name: Build
-        run: npm run build
-      - name: Add nojekyll
-        run: touch ./dist/.nojekyll
-      - name: Deploy
-        uses: crazy-max/ghaction-github-pages@v3
+        run: yarn build
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          target_branch: gh-pages
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          # Adds .nojekyll, so GitHub serves the built assets untouched.
+          enable_jekyll: false
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: 'deploy: ${{ github.sha }}'

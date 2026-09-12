@@ -1,16 +1,21 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import theme from './theme'
-import './index.css'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { profile } from './data/profile';
+import './styles/tokens.css';
+import './styles/base.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ChakraProvider
-      theme={theme}
-    >
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>
-)
+// Keeps the tab title in step with profile.ts rather than duplicating the
+// name into index.html.
+document.title = `${profile.name} — contact card`;
+
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('index.html is missing the #root element.');
+}
+
+createRoot(container).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);

@@ -1,19 +1,47 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import LinkTree from './components/LinkTree'
-import { Helmet } from 'react-helmet'
-import './App.css'
+import { useState } from 'react';
+import { findLinkById, profile } from './data/profile';
+import { LinkList } from './components/LinkList';
+import { ProfileHeader } from './components/ProfileHeader';
+import { QrPanel } from './components/QrPanel';
+import './App.css';
 
-const App = (): JSX.Element => {
+export default function App() {
+  const [selectedId, setSelectedId] = useState(
+    () => profile.links[0]?.id ?? '',
+  );
+
+  if (profile.links.length === 0) {
+    return (
+      <main className="page">
+        <p className="page__empty">
+          Add your first link in <code>src/data/profile.ts</code> and it will
+          appear here with its own code.
+        </p>
+      </main>
+    );
+  }
+
+  const selected = findLinkById(selectedId);
+
   return (
-    <>
-      <Helmet>
-        <title>Teo Wei Shen</title>
-      </Helmet>
-      <Header />
-      <LinkTree />
-    </>
-  )
-}
+    <main className="page">
+      <div className="card">
+        <div className="card__identity">
+          <ProfileHeader profile={profile} />
+        </div>
 
-export default App
+        <div className="card__panel">
+          <QrPanel link={selected} />
+        </div>
+
+        <div className="card__links">
+          <LinkList
+            links={profile.links}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          />
+        </div>
+      </div>
+    </main>
+  );
+}
