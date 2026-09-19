@@ -1,7 +1,7 @@
 # tws4793.github.io
 
 A personal contact card. One page, one row per way to reach me, and a
-scannable code for each, in six languages. Built with Vite, React, TypeScript
+scannable code for each, in eight languages. Built with Vite, React, TypeScript
 and Material UI, and installable as a progressive web app that works with no
 network at all.
 
@@ -121,11 +121,11 @@ or a plain typo — throws on render rather than reaching an attribute.
 ## Languages
 
 The card speaks English, Mandarin, Malay and Tamil — Singapore's four official
-languages — plus Cantonese and Japanese. `i18next` and `react-i18next` do the
-work; the switcher is the translate icon in the top-right corner, and lists
-the official four first.
+languages — plus Cantonese, Japanese, German and French. `i18next` and
+`react-i18next` do the work; the switcher is the translate icon in the
+top-right corner, and lists the official four first.
 
-All six are RTL-free, so there is no `dir` handling anywhere and none is
+All eight are RTL-free, so there is no `dir` handling anywhere and none is
 needed.
 
 Cantonese is `yue`, a language tag of its own rather than a variant of `zh`.
@@ -151,8 +151,31 @@ label: { en: 'Personal Email', zh: '个人邮箱', ms: 'E-mel Peribadi', ta: '�
 ```
 
 `en` is required in the object form, so there is always something to fall back
-to when a language is left untranslated. Brand names stay plain strings:
-Telegram is Telegram everywhere.
+to when a language is left untranslated.
+
+### Platform names are translated too
+
+Not uniformly, though — only where the language has an established form of its
+own, which makes this a per-language judgement rather than one rule:
+
+|           | Telegram   | LinkedIn     | GitHub     | Instagram      |
+| --------- | ---------- | ------------ | ---------- | -------------- |
+| Japanese  | テレグラム | リンクトイン | ギットハブ | インスタグラム |
+| Tamil     | டெலிகிராம் | லிங்க்ட்இன்  | கிட்ஹப்    | இன்ஸ்டாகிராம்  |
+| Mandarin  | 电报       | 领英         | —          | —              |
+| Cantonese | 電報       | —            | —          | —              |
+
+Japanese has settled katakana forms for all four, and Tamil routinely
+transliterates foreign brand names. Mandarin has real names for some services
+— 领英 is LinkedIn's own — but none in use for Instagram or GitHub. Hong Kong
+writes LinkedIn in Latin, so Cantonese takes only 電報. German, French, Malay
+and English are Latin-script and need nothing.
+
+A dash in that table is not an omission to fix later: it means the language is
+simply left out of the `label` object and falls back to the Latin name, which
+is the right answer when inventing one would be worse.
+
+Handles are never translated. `@tws4793` is an identifier, not a word.
 
 `src/lib/localise.ts` resolves those values and deliberately imports neither
 React nor i18next, because the build calls it too — the web app manifest is
