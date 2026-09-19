@@ -58,7 +58,7 @@ export const profile: Profile = {
       url: 'https://instagram.com/tws.cr3',
     },
     {
-      id: 'personal',
+      id: 'personal-instagram',
       platform: 'instagram',
       label: 'Personal Instagram',
       handle: '@tws4793',
