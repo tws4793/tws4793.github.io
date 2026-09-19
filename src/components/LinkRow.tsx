@@ -6,6 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { externalLinkProps } from '../lib/externalLink';
+import { useLocale } from '../lib/useLocale';
 import type { ProfileLink } from '../types';
 import { PlatformIcon } from './PlatformIcon';
 
@@ -21,16 +22,19 @@ interface LinkRowProps {
  * it gets the trailing icon button, per Material's list anatomy.
  */
 export function LinkRow({ link, isSelected, onSelect }: LinkRowProps) {
+  const { t, l } = useLocale();
+  const label = l(link.label);
+
   return (
     <ListItem
       disablePadding
       secondaryAction={
-        <Tooltip title={`Open ${link.label}`}>
+        <Tooltip title={t('qr.open', { label })}>
           <IconButton
             edge="end"
             {...externalLinkProps(link.url)}
             component="a"
-            aria-label={`Open ${link.label} in a new tab`}
+            aria-label={t('nav.openInNewTab', { label })}
           >
             <OpenInNewIcon fontSize="small" />
           </IconButton>
@@ -40,7 +44,7 @@ export function LinkRow({ link, isSelected, onSelect }: LinkRowProps) {
       <ListItemButton
         selected={isSelected}
         onClick={() => onSelect(link.id)}
-        aria-label={`Show the ${link.label} code`}
+        aria-label={t('nav.showCode', { label })}
         // `selected` is only a tint; this is what says so to a screen reader.
         aria-current={isSelected}
       >
@@ -48,7 +52,7 @@ export function LinkRow({ link, isSelected, onSelect }: LinkRowProps) {
           <PlatformIcon platform={link.platform} />
         </ListItemIcon>
         <ListItemText
-          primary={link.label}
+          primary={label}
           secondary={link.handle}
           slotProps={{ secondary: { noWrap: true } }}
         />

@@ -7,8 +7,10 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { Trans } from 'react-i18next';
 import { ColorSchemeToggle } from './components/ColorSchemeToggle';
 import { InstallButton } from './components/InstallButton';
+import { LanguageMenu } from './components/LanguageMenu';
 import { LinkList } from './components/LinkList';
 import { ProfileHeader } from './components/ProfileHeader';
 import { QrPanel } from './components/QrPanel';
@@ -44,6 +46,7 @@ export default function App() {
           sx={{ mb: 2, justifyContent: 'flex-end', alignItems: 'center' }}
         >
           <InstallButton />
+          <LanguageMenu />
           <ColorSchemeToggle />
         </Stack>
 
@@ -92,12 +95,20 @@ export default function App() {
   );
 }
 
+/*
+  `Trans` rather than plain interpolation: the filename has to be marked up as
+  <code>, and which side of the sentence it falls on differs by language. The
+  <code> tag in the translation string says where it goes.
+*/
 function EmptyState() {
   return (
     <CardContent>
       <Typography color="text.secondary">
-        Add your first link in <code>src/data/profile.ts</code> and it will
-        appear here with its own code.
+        <Trans
+          i18nKey="empty.message"
+          values={{ file: 'src/data/profile.ts' }}
+          components={{ code: <code /> }}
+        />
       </Typography>
     </CardContent>
   );

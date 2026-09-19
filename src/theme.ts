@@ -25,8 +25,32 @@ export const theme = createTheme({
   shape: { borderRadius: 12 },
 
   typography: {
-    // Material's own typeface, self-hosted and imported in `main.tsx`.
-    fontFamily: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'].join(','),
+    /*
+      Roboto is Material's own typeface, self-hosted and imported in
+      `main.tsx` — but only its Latin subset, which covers English and Malay
+      and has no Chinese or Tamil glyphs at all.
+
+      Those two fall through to the system families listed after it. Shipping
+      web fonts for them was the other option and a bad one: a Chinese
+      webfont runs to several megabytes, and everything here is precached by
+      the service worker, so it would be several megabytes downloaded by
+      every visitor to support a language most of them will never pick.
+      Every platform Singapore uses already carries these faces.
+    */
+    fontFamily: [
+      'Roboto',
+      // Chinese: Apple, Windows, Android/Linux.
+      '"PingFang SC"',
+      '"Microsoft YaHei"',
+      '"Noto Sans CJK SC"',
+      // Tamil: Apple, Windows, Android/Linux.
+      '"Tamil Sangam MN"',
+      '"Nirmala UI"',
+      '"Noto Sans Tamil"',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
   },
 
   components: {
