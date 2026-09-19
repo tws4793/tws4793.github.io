@@ -1,7 +1,7 @@
 # tws4793.github.io
 
 A personal contact card. One page, one row per way to reach me, and a
-scannable code for each. Built with Vite, React and TypeScript.
+scannable code for each. Built with Vite, React, TypeScript and Material UI.
 
 ## Getting started
 
@@ -45,25 +45,69 @@ Instagram reads better as **Photography** than as **Instagram**, and it tells a
 recruiter the account is not your personal one.
 
 Adding a platform means adding it to the `Platform` union in `src/types.ts`
-_and_ adding a glyph to `src/components/PlatformIcon.tsx`. TypeScript will
-refuse to build until you do both, which is intended.
+_and_ mapping it to an icon in `src/components/PlatformIcon.tsx`. TypeScript
+will refuse to build until you do both, which is intended.
+
+Link URLs are checked against an allowlist of schemes — `https:`, `mailto:`
+and `tel:` — in `src/lib/externalLink.ts`. A typo or a pasted `javascript:`
+URL throws on render rather than reaching an `href`.
 
 Everything is placeholder text right now — search the repo for `PLACEHOLDER`.
 
 ## Design notes
 
-The hero is the code, not the avatar. One bright paper panel on a dark petrol
-field, and swapping which code it shows is the only animation on the page.
+This version is built with [Material UI](https://mui.com) and deliberately
+looks like it: stock palette, stock Roboto type scale, Material's own icon set,
+and Material's list and card anatomy. The point is to show what the page costs
+and what it gains when the design language comes from the library rather than
+from a hand-written stylesheet. There are no CSS files in `src/` at all —
+every style is either the theme or an `sx` prop.
 
-The panel sizes itself with a container query rather than a viewport
-breakpoint: when it is wide (any phone) the caption sits alongside the code so
-the code does not eat the screen; when it is narrow (the desktop side column)
-it stacks and the code runs full width. That is why the phone view reads like a
-name badge and the desktop view reads like a card.
+The page is one `Card`. `CardHeader` carries the avatar, name, tagline and a
+location `Chip`; below it a two-column `Grid` puts the code on the left and the
+list of links on the right, collapsing to one column below the `md` breakpoint.
 
-`--qr-paper` and `--qr-ink` in `src/styles/tokens.css` are deliberately not
-theme-swapped. Camera apps need dark modules on a light quiet zone, so those
-two hold still while every other token flips for the light scheme.
+Material's list anatomy decides which control does what. Selecting a code is
+the row's _primary_ action, so the whole row is the `ListItemButton` and the
+selected row gets Material's standard `selected` tint. Opening the destination
+is the _secondary_ action, so it is the trailing icon button. The previous
+version had these the other way round, which needed a custom hairline and a
+custom accent bar to explain itself; here the component does the explaining.
+
+### The theme
+
+`src/theme.ts` is close to stock on purpose — the shape radius, Roboto, and
+the two colour schemes, and little else. `cssVariables` emits the theme as CSS
+custom properties, so switching schemes is a class swap on `<html>` rather
+than a React re-render.
+
+`colorSchemeSelector: 'class'` is the line that makes the in-page toggle
+possible; MUI's `'media'` default would pin the page to the OS setting with no
+way to override it.
+
+### Light and dark
+
+`ThemeProvider` is given `defaultMode="system"`, so a first visit follows the
+OS. `src/components/ColorSchemeToggle.tsx` then offers light / system / dark as
+three segments rather than a single sun-moon button: with only two states there
+is nowhere to put "follow the OS", which is the state most people want.
+`useColorScheme` persists the choice to `localStorage`.
+
+`mode` is `undefined` on the first render, before the stored value is read
+back. The toggle renders nothing until it resolves, which is what keeps it
+from flashing the wrong segment.
+
+The code panel is the one thing that does _not_ follow the scheme. A decoder
+needs dark modules on a light quiet zone, so that `Paper` is pinned to
+`common.white` in both schemes.
+
+### Outbound links
+
+Every `href` on the page is built by `externalLinkProps` in
+`src/lib/externalLink.ts`, which checks the URL against an allowlist of schemes
+(`https:`, `mailto:`, `tel:`) and attaches `rel="noreferrer noopener"`. Writing
+it once means a new row cannot forget either. A `javascript:` or `data:` URL —
+or a plain typo — throws on render rather than reaching an attribute.
 
 ## Wallpapers
 
