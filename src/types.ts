@@ -11,7 +11,16 @@ export type Platform =
   Traditional characters. Someone who reads one does not automatically get
   the other.
 */
-export const LOCALES = ['en', 'zh', 'ms', 'ta', 'yue', 'ja'] as const;
+export const LOCALES = [
+  'en',
+  'zh',
+  'ms',
+  'ta',
+  'yue',
+  'ja',
+  'de',
+  'fr',
+] as const;
 
 export type Locale = (typeof LOCALES)[number];
 

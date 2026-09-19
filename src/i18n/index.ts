@@ -2,7 +2,9 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import { LOCALES, type Locale } from '../types';
+import { de } from './locales/de';
 import { en, type Translation } from './locales/en';
+import { fr } from './locales/fr';
 import { ja } from './locales/ja';
 import { ms } from './locales/ms';
 import { ta } from './locales/ta';
@@ -17,6 +19,8 @@ export const LANGUAGE_NAMES: Readonly<Record<Locale, string>> = {
   ta: 'தமிழ்',
   yue: '廣東話',
   ja: '日本語',
+  de: 'Deutsch',
+  fr: 'Français',
 };
 
 /*
@@ -32,6 +36,8 @@ const resources = {
   ta: { translation: ta },
   yue: { translation: yue },
   ja: { translation: ja },
+  de: { translation: de },
+  fr: { translation: fr },
 } as const;
 
 void i18n
