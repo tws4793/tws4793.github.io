@@ -1,8 +1,9 @@
 # tws4793.github.io
 
 A personal contact card. One page, one row per way to reach me, and a
-scannable code for each. Built with Vite, React, TypeScript and Material UI,
-and installable as a progressive web app that works with no network at all.
+scannable code for each, in Singapore's four official languages. Built with
+Vite, React, TypeScript and Material UI, and installable as a progressive web
+app that works with no network at all.
 
 ## Getting started
 
@@ -52,6 +53,9 @@ recruiter the account is not your personal one.
 Adding a platform means adding it to the `Platform` union in `src/types.ts`
 _and_ mapping it to an icon in `src/components/PlatformIcon.tsx`. TypeScript
 will refuse to build until you do both, which is intended.
+
+`tagline`, `location` and a link's `label` each take either a plain string or
+one string per language — see [Languages](#languages).
 
 Link URLs are checked against an allowlist of schemes — `https:`, `mailto:`
 and `tel:` — in `src/lib/externalLink.ts`. A typo or a pasted `javascript:`
@@ -113,6 +117,77 @@ Every `href` on the page is built by `externalLinkProps` in
 (`https:`, `mailto:`, `tel:`) and attaches `rel="noreferrer noopener"`. Writing
 it once means a new row cannot forget either. A `javascript:` or `data:` URL —
 or a plain typo — throws on render rather than reaching an attribute.
+
+## Languages
+
+The card speaks English, Mandarin, Malay and Tamil — Singapore's four official
+languages. `i18next` and `react-i18next` do the work; the switcher is the
+translate icon in the top-right corner.
+
+All four are RTL-free, so there is no `dir` handling anywhere and none is
+needed.
+
+### Two kinds of text
+
+Interface strings live in `src/i18n/locales/`. English is the source of truth
+for the _shape_ of a translation: `en.ts` exports the object, and the other
+three are typed as `Translation`, so adding a key and forgetting to translate
+it fails the build rather than falling back silently at runtime.
+
+Profile text — the tagline, the location, each link's label — lives in
+`profile.ts` with the rest of the profile, because it is yours rather than the
+interface's. Those fields take either a plain string or one string per
+language:
+
+```ts
+label: 'Telegram',                    // same in every language
+label: { en: 'Personal Email', zh: '个人邮箱', ms: 'E-mel Peribadi', ta: 'தனிப்பட்ட மின்னஞ்சல்' },
+```
+
+`en` is required in the object form, so there is always something to fall back
+to when a language is left untranslated. Brand names stay plain strings:
+Telegram is Telegram everywhere.
+
+`src/lib/localise.ts` resolves those values and deliberately imports neither
+React nor i18next, because the build calls it too — the web app manifest is
+generated from the profile and needs the same answer the page would give.
+
+### Detection and persistence
+
+`i18next-browser-languagedetector` checks `localStorage` first, then the
+browser's own languages, then falls back to English. `load: 'languageOnly'`
+means `en-SG` and `zh-CN` resolve to `en` and `zh` rather than missing. A
+choice made in the switcher is written back to `localStorage` under `lang`.
+
+`<html lang>` is kept in step with the choice, which is what tells a screen
+reader which voice to use and the browser which font fallbacks to apply.
+
+### All four ship in the bundle
+
+Translations are bundled rather than fetched per language. Four small
+dictionaries cost less than the round trip, and a language the service worker
+had never fetched would be unavailable offline — which is exactly the
+situation this card is built for.
+
+### Fonts
+
+Roboto's Latin subset covers English and Malay and has no Chinese or Tamil
+glyphs at all. Those fall through to system families named in the theme's font
+stack — PingFang SC, Microsoft YaHei, Noto Sans CJK; Tamil Sangam MN, Nirmala
+UI, Noto Sans Tamil.
+
+Shipping web fonts for them was the other option and a bad one. A Chinese
+webfont runs to several megabytes, and everything here is precached by the
+service worker, so it would be megabytes downloaded by every visitor to
+support a language most of them will never pick. Every platform in common use
+in Singapore already carries these faces.
+
+### What is not translated
+
+The web app manifest is written once at build time and cannot follow a
+language the visitor picks later, so the installed app's name, description and
+launcher shortcuts are English. Same for the `<meta name="description">` in
+`index.html`. Both would need server-side rendering to do otherwise.
 
 ## Progressive web app
 
