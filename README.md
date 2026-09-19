@@ -1,9 +1,9 @@
 # tws4793.github.io
 
 A personal contact card. One page, one row per way to reach me, and a
-scannable code for each, in Singapore's four official languages. Built with
-Vite, React, TypeScript and Material UI, and installable as a progressive web
-app that works with no network at all.
+scannable code for each, in six languages. Built with Vite, React, TypeScript
+and Material UI, and installable as a progressive web app that works with no
+network at all.
 
 ## Getting started
 
@@ -121,11 +121,17 @@ or a plain typo — throws on render rather than reaching an attribute.
 ## Languages
 
 The card speaks English, Mandarin, Malay and Tamil — Singapore's four official
-languages. `i18next` and `react-i18next` do the work; the switcher is the
-translate icon in the top-right corner.
+languages — plus Cantonese and Japanese. `i18next` and `react-i18next` do the
+work; the switcher is the translate icon in the top-right corner, and lists
+the official four first.
 
-All four are RTL-free, so there is no `dir` handling anywhere and none is
+All six are RTL-free, so there is no `dir` handling anywhere and none is
 needed.
+
+Cantonese is `yue`, a language tag of its own rather than a variant of `zh`.
+Written Cantonese has its own vocabulary and grammar — 嘅, 喺, 呢, 咗 — and is
+set in Traditional characters, so it is not Mandarin with the characters
+swapped, and someone who reads one does not automatically get the other.
 
 ### Two kinds of text
 
@@ -171,16 +177,33 @@ situation this card is built for.
 
 ### Fonts
 
-Roboto's Latin subset covers English and Malay and has no Chinese or Tamil
-glyphs at all. Those fall through to system families named in the theme's font
-stack — PingFang SC, Microsoft YaHei, Noto Sans CJK; Tamil Sangam MN, Nirmala
-UI, Noto Sans Tamil.
+Roboto's Latin subset covers English and Malay and has no Chinese, Japanese or
+Tamil glyphs at all. Those fall through to system families.
 
-Shipping web fonts for them was the other option and a bad one. A Chinese
-webfont runs to several megabytes, and everything here is precached by the
-service worker, so it would be megabytes downloaded by every visitor to
-support a language most of them will never pick. Every platform in common use
-in Singapore already carries these faces.
+Shipping web fonts for them was the other option and a bad one. A CJK webfont
+runs to several megabytes, and everything here is precached by the service
+worker, so it would be megabytes downloaded by every visitor to support a
+language most of them will never pick. Every platform in common use already
+carries these faces.
+
+Mandarin, Cantonese and Japanese get **separate** stacks rather than one
+shared CJK entry. They share characters but not their shapes: 直, 今 and 骨 are
+each drawn differently in Simplified Chinese, Traditional Chinese and
+Japanese, and a reader notices at once when a page is set in the wrong one. A
+single stack would have handed Japanese text to whichever Chinese font came
+first.
+
+The mechanism is one level of indirection. The theme sets
+`fontFamily: 'var(--app-font-stack)'`, and `CssBaseline` redefines that
+variable per `:root:lang(...)`. Setting `font-family` directly under `:lang()`
+would not have worked: MUI's component classes have equal specificity and are
+injected later, so they would win. A custom property sidesteps the fight
+entirely — the component rule reads the variable, and the variable's value is
+whatever the language on `<html>` says.
+
+Each stack still leads with Roboto, so Latin runs — handles, email addresses,
+"Instagram", "ST Engineering" — keep Material's typeface rather than the Latin
+glyphs bundled into a CJK font.
 
 ### What is not translated
 
