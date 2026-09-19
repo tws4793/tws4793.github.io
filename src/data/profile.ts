@@ -8,12 +8,27 @@ import type { Profile, ProfileLink } from '../types';
   the page opens, so it should be the one you scan at people.
 
   Replace every PLACEHOLDER below before deploying.
+
+  Any of `tagline`, `location` and a link's `label` may be written either as a
+  plain string or as one string per language. Brand names — Telegram, GitHub,
+  LinkedIn — read the same everywhere and stay plain strings; anything that is
+  a description rather than a name is worth translating. English is required
+  in the object form, and stands in wherever a language is missing.
 */
 export const profile: Profile = {
   name: 'TEO Wei Shen',
-  tagline:
-    'Senior Software Engineer at ST Engineering. Also hobbyist photographer.',
-  location: 'Singapore',
+  tagline: {
+    en: 'Senior Software Engineer at ST Engineering. Also hobbyist photographer.',
+    zh: '新加坡科技工程有限公司高级软件工程师，业余摄影爱好者。',
+    ms: 'Jurutera Perisian Kanan di ST Engineering. Juga jurugambar amatur.',
+    ta: 'ST Engineering நிறுவனத்தில் மூத்த மென்பொருள் பொறியாளர். பொழுதுபோக்காகப் புகைப்படக் கலைஞர்.',
+  },
+  location: {
+    en: 'Singapore',
+    zh: '新加坡',
+    ms: 'Singapura',
+    ta: 'சிங்கப்பூர்',
+  },
   links: [
     {
       id: 'telegram',
@@ -25,14 +40,24 @@ export const profile: Profile = {
     {
       id: 'work',
       platform: 'email',
-      label: 'Business Email',
+      label: {
+        en: 'Business Email',
+        zh: '公司邮箱',
+        ms: 'E-mel Kerja',
+        ta: 'பணி மின்னஞ்சல்',
+      },
       handle: 'weishen.teo@stengg.com',
       url: 'mailto:weishen.teo@stengg.com',
     },
     {
       id: 'personal',
       platform: 'email',
-      label: 'Personal Email',
+      label: {
+        en: 'Personal Email',
+        zh: '个人邮箱',
+        ms: 'E-mel Peribadi',
+        ta: 'தனிப்பட்ட மின்னஞ்சல்',
+      },
       handle: 'tws4793@gmail.com',
       url: 'mailto:tws4793@gmail.com',
     },
@@ -53,14 +78,24 @@ export const profile: Profile = {
     {
       id: 'photography',
       platform: 'instagram',
-      label: 'Photography Instagram',
+      label: {
+        en: 'Photography Instagram',
+        zh: '摄影 Instagram',
+        ms: 'Instagram Fotografi',
+        ta: 'புகைப்பட Instagram',
+      },
       handle: '@tws.cr3',
       url: 'https://instagram.com/tws.cr3',
     },
     {
       id: 'personal-instagram',
       platform: 'instagram',
-      label: 'Personal Instagram',
+      label: {
+        en: 'Personal Instagram',
+        zh: '个人 Instagram',
+        ms: 'Instagram Peribadi',
+        ta: 'தனிப்பட்ட Instagram',
+      },
       handle: '@tws4793',
       url: 'https://instagram.com/tws4793',
     },
