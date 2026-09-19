@@ -1,8 +1,17 @@
 export type Platform =
   'telegram' | 'instagram' | 'linkedin' | 'github' | 'email' | 'website';
 
-/** Singapore's four official languages, in the order the switcher lists them. */
-export const LOCALES = ['en', 'zh', 'ms', 'ta'] as const;
+/*
+  The languages the card speaks, in the order the switcher lists them:
+  Singapore's four official languages first, then the rest.
+
+  `zh` is Mandarin in Simplified characters, as Singapore writes it. `yue` is
+  Cantonese — a separate language tag rather than a variant of `zh`, because
+  written Cantonese has its own vocabulary and grammar and is set in
+  Traditional characters. Someone who reads one does not automatically get
+  the other.
+*/
+export const LOCALES = ['en', 'zh', 'ms', 'ta', 'yue', 'ja'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 

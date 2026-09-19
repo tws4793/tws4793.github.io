@@ -3,8 +3,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import { LOCALES, type Locale } from '../types';
 import { en, type Translation } from './locales/en';
+import { ja } from './locales/ja';
 import { ms } from './locales/ms';
 import { ta } from './locales/ta';
+import { yue } from './locales/yue';
 import { zh } from './locales/zh';
 
 /** What each language calls itself — never translated into the others. */
@@ -13,19 +15,23 @@ export const LANGUAGE_NAMES: Readonly<Record<Locale, string>> = {
   zh: '中文',
   ms: 'Bahasa Melayu',
   ta: 'தமிழ்',
+  yue: '廣東話',
+  ja: '日本語',
 };
 
 /*
   Every language ships in the bundle rather than being fetched per locale.
-  Four small dictionaries are far cheaper than the round trip, and a language
-  the service worker never fetched would be unavailable offline — which is the
-  situation this card is built for.
+  These dictionaries are small enough that they cost far less than the round
+  trip, and a language the service worker never fetched would be unavailable
+  offline — which is the situation this card is built for.
 */
 const resources = {
   en: { translation: en },
   zh: { translation: zh },
   ms: { translation: ms },
   ta: { translation: ta },
+  yue: { translation: yue },
+  ja: { translation: ja },
 } as const;
 
 void i18n
