@@ -10,10 +10,15 @@ import type { Profile, ProfileLink } from '../types';
   Replace every PLACEHOLDER below before deploying.
 
   Any of `tagline`, `location` and a link's `label` may be written either as a
-  plain string or as one string per language. Brand names — Telegram, GitHub,
-  LinkedIn — read the same everywhere and stay plain strings; anything that is
-  a description rather than a name is worth translating. English is required
-  in the object form, and stands in wherever a language is missing.
+  plain string or as one string per language. English is required in the object
+  form, and stands in wherever a language is missing.
+
+  Platform names are translated too, wherever the language has an established
+  form of its own: Japanese and Tamil write them in their own scripts, and
+  Mandarin has real names for some services (电报, 领英) but none for Instagram
+  or GitHub. Where no such form exists, leave the language out of the object
+  and it falls back to the Latin name — that is why GitHub lists only `ta` and
+  `ja`, and why LinkedIn has no `yue`, Hong Kong writing it in Latin.
 */
 export const profile: Profile = {
   name: 'TEO Wei Shen',
@@ -24,6 +29,8 @@ export const profile: Profile = {
     ta: 'ST Engineering நிறுவனத்தில் மூத்த மென்பொருள் பொறியாளர். பொழுதுபோக்காகப் புகைப்படக் கலைஞர்.',
     yue: '新加坡科技工程有限公司高級軟件工程師，得閒鍾意影相。',
     ja: 'ST Engineering のシニアソフトウェアエンジニア。趣味は写真撮影。',
+    de: 'Senior Software Engineer bei ST Engineering. Außerdem Hobbyfotograf.',
+    fr: 'Ingénieur logiciel senior chez ST Engineering. Également photographe amateur.',
   },
   location: {
     en: 'Singapore',
@@ -32,12 +39,20 @@ export const profile: Profile = {
     ta: 'சிங்கப்பூர்',
     yue: '新加坡',
     ja: 'シンガポール',
+    de: 'Singapur',
+    fr: 'Singapour',
   },
   links: [
     {
       id: 'telegram',
       platform: 'telegram',
-      label: 'Telegram',
+      label: {
+        en: 'Telegram',
+        zh: '电报',
+        yue: '電報',
+        ta: 'டெலிகிராம்',
+        ja: 'テレグラム',
+      },
       handle: '@tws4793',
       url: 'https://t.me/tws4793',
     },
@@ -51,6 +66,8 @@ export const profile: Profile = {
         ta: 'பணி மின்னஞ்சல்',
         yue: '公司電郵',
         ja: '仕事用メール',
+        de: 'Geschäftliche E-Mail',
+        fr: 'E-mail professionnel',
       },
       handle: 'weishen.teo@stengg.com',
       url: 'mailto:weishen.teo@stengg.com',
@@ -65,6 +82,8 @@ export const profile: Profile = {
         ta: 'தனிப்பட்ட மின்னஞ்சல்',
         yue: '私人電郵',
         ja: '個人用メール',
+        de: 'Private E-Mail',
+        fr: 'E-mail personnel',
       },
       handle: 'tws4793@gmail.com',
       url: 'mailto:tws4793@gmail.com',
@@ -72,14 +91,23 @@ export const profile: Profile = {
     {
       id: 'linkedin',
       platform: 'linkedin',
-      label: 'LinkedIn',
+      label: {
+        en: 'LinkedIn',
+        zh: '领英',
+        ta: 'லிங்க்ட்இன்',
+        ja: 'リンクトイン',
+      },
       handle: 'in/teo-wei-shen',
       url: 'https://www.linkedin.com/in/teo-wei-shen/',
     },
     {
       id: 'github',
       platform: 'github',
-      label: 'GitHub',
+      label: {
+        en: 'GitHub',
+        ta: 'கிட்ஹப்',
+        ja: 'ギットハブ',
+      },
       handle: '@tws4793',
       url: 'https://github.com/tws4793',
     },
@@ -90,9 +118,11 @@ export const profile: Profile = {
         en: 'Photography Instagram',
         zh: '摄影 Instagram',
         ms: 'Instagram Fotografi',
-        ta: 'புகைப்பட Instagram',
+        ta: 'புகைப்பட இன்ஸ்டாகிராம்',
         yue: '攝影 Instagram',
-        ja: '写真 Instagram',
+        ja: '写真用インスタグラム',
+        de: 'Instagram (Fotografie)',
+        fr: 'Instagram (photographie)',
       },
       handle: '@tws.cr3',
       url: 'https://instagram.com/tws.cr3',
@@ -104,9 +134,11 @@ export const profile: Profile = {
         en: 'Personal Instagram',
         zh: '个人 Instagram',
         ms: 'Instagram Peribadi',
-        ta: 'தனிப்பட்ட Instagram',
+        ta: 'தனிப்பட்ட இன்ஸ்டாகிராம்',
         yue: '私人 Instagram',
-        ja: '個人 Instagram',
+        ja: '個人用インスタグラム',
+        de: 'Instagram (privat)',
+        fr: 'Instagram (personnel)',
       },
       handle: '@tws4793',
       url: 'https://instagram.com/tws4793',
