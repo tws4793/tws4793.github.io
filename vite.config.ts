@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { localise } from './src/lib/localise';
 import { profile } from './src/data/profile';
 
 /** Matches the Material primary used by the theme and by the generated icons. */
@@ -20,13 +21,20 @@ const shortName =
   and the order in profile.ts is already "most useful first", so the top four
   are the right four. `App` validates the `code` parameter against the profile
   before trusting it.
+
+  A manifest is written once at build time and cannot follow the language the
+  visitor later picks, so these are English — the profile's mandatory
+  fallback — whatever else the card is translated into.
 */
-const shortcuts = profile.links.slice(0, 4).map((link) => ({
-  name: `${link.label} code`,
-  short_name: link.label,
-  description: `Show the code for ${link.handle}`,
-  url: `./?code=${encodeURIComponent(link.id)}`,
-}));
+const shortcuts = profile.links.slice(0, 4).map((link) => {
+  const label = localise(link.label, 'en');
+  return {
+    name: `${label} code`,
+    short_name: label,
+    description: `Show the code for ${link.handle}`,
+    url: `./?code=${encodeURIComponent(link.id)}`,
+  };
+});
 
 // `base: './'` keeps asset URLs relative so the built site works when served
 // from a sub-path (GitHub Pages project sites, for example). `start_url` and
@@ -50,7 +58,7 @@ export default defineConfig({
       manifest: {
         name: `${profile.name} — contact card`,
         short_name: shortName,
-        description: profile.tagline,
+        description: localise(profile.tagline, 'en'),
         start_url: '.',
         scope: '.',
         display: 'standalone',

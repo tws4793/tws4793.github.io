@@ -4,6 +4,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useLocale } from '../lib/useLocale';
 import type { Profile } from '../types';
 
 interface ProfileHeaderProps {
@@ -11,6 +12,8 @@ interface ProfileHeaderProps {
 }
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
+  const { l } = useLocale();
+
   return (
     <CardHeader
       avatar={
@@ -29,13 +32,13 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
       subheader={
         <Stack spacing={1} sx={{ mt: 0.5, alignItems: 'flex-start' }}>
           <Typography variant="body2" color="text.secondary">
-            {profile.tagline}
+            {l(profile.tagline)}
           </Typography>
           <Chip
             size="small"
             variant="outlined"
             icon={<PlaceIcon />}
-            label={profile.location}
+            label={l(profile.location)}
           />
         </Stack>
       }

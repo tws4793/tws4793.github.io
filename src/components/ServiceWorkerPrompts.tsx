@@ -2,6 +2,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import { useRegisterSW } from 'virtual:pwa-register/react';
+import { useLocale } from '../lib/useLocale';
 
 /**
  * The two things the service worker has to be able to say.
@@ -11,6 +12,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
  * there is no second, silent registration racing this one.
  */
 export function ServiceWorkerPrompts() {
+  const { t } = useLocale();
   const {
     offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
@@ -25,7 +27,7 @@ export function ServiceWorkerPrompts() {
         onClose={() => setOfflineReady(false)}
       >
         <Alert severity="success" onClose={() => setOfflineReady(false)}>
-          Ready to work offline.
+          {t('serviceWorker.offlineReady')}
         </Alert>
       </Snackbar>
 
@@ -43,11 +45,11 @@ export function ServiceWorkerPrompts() {
               size="small"
               onClick={() => void updateServiceWorker()}
             >
-              Reload
+              {t('serviceWorker.reload')}
             </Button>
           }
         >
-          A new version is available.
+          {t('serviceWorker.updateAvailable')}
         </Alert>
       </Snackbar>
     </>

@@ -1,6 +1,7 @@
 import InstallMobileIcon from '@mui/icons-material/InstallMobile';
 import Button from '@mui/material/Button';
 import { useInstallPrompt } from '../lib/useInstallPrompt';
+import { useLocale } from '../lib/useLocale';
 
 /**
  * Renders nothing unless the browser has offered an install invitation, which
@@ -8,6 +9,7 @@ import { useInstallPrompt } from '../lib/useInstallPrompt';
  * has not judged installable, and a dead button would only puzzle people.
  */
 export function InstallButton() {
+  const { t } = useLocale();
   const { prompt } = useInstallPrompt();
 
   if (!prompt) {
@@ -21,7 +23,7 @@ export function InstallButton() {
       startIcon={<InstallMobileIcon />}
       onClick={() => void prompt()}
     >
-      Install
+      {t('install.action')}
     </Button>
   );
 }

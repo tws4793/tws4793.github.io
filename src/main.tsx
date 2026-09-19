@@ -14,6 +14,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { profile } from './data/profile';
+// Side-effect import: initialises i18next before the first render reads it.
+import './i18n';
 import { theme } from './theme';
 
 // Keeps the tab title in step with profile.ts rather than duplicating the

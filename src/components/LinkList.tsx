@@ -1,5 +1,6 @@
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
+import { useLocale } from '../lib/useLocale';
 import type { ProfileLink } from '../types';
 import { LinkRow } from './LinkRow';
 
@@ -10,12 +11,16 @@ interface LinkListProps {
 }
 
 export function LinkList({ links, selectedId, onSelect }: LinkListProps) {
+  const { t } = useLocale();
+
   return (
     <List
       component="nav"
-      aria-label="Where to find me"
+      aria-label={t('nav.whereToFindMe')}
       disablePadding
-      subheader={<ListSubheader disableSticky>Where to find me</ListSubheader>}
+      subheader={
+        <ListSubheader disableSticky>{t('nav.whereToFindMe')}</ListSubheader>
+      }
     >
       {links.map((link) => (
         <LinkRow
