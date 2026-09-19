@@ -25,7 +25,7 @@ export const theme = createTheme({
   shape: { borderRadius: 12 },
 
   typography: {
-    // Material's own typeface, loaded from Google Fonts in `index.html`.
+    // Material's own typeface, self-hosted and imported in `main.tsx`.
     fontFamily: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'].join(','),
   },
 

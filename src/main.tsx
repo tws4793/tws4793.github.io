@@ -1,3 +1,13 @@
+/*
+  Roboto is self-hosted rather than pulled from Google Fonts: the service
+  worker precaches these files with the rest of the build, so an offline visit
+  renders in the real typeface instead of falling back to a system font. Only
+  the weights the theme actually asks for, and only the Latin subset.
+*/
+import '@fontsource/roboto/latin-300.css';
+import '@fontsource/roboto/latin-400.css';
+import '@fontsource/roboto/latin-500.css';
+import '@fontsource/roboto/latin-700.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { StrictMode } from 'react';

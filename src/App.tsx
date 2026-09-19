@@ -8,15 +8,29 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { ColorSchemeToggle } from './components/ColorSchemeToggle';
+import { InstallButton } from './components/InstallButton';
 import { LinkList } from './components/LinkList';
 import { ProfileHeader } from './components/ProfileHeader';
 import { QrPanel } from './components/QrPanel';
+import { ServiceWorkerPrompts } from './components/ServiceWorkerPrompts';
 import { findLinkById, profile } from './data/profile';
 
+/**
+ * Which code to show on open. The manifest's launcher shortcuts point at
+ * `./?code=<id>`, so that parameter picks the starting code — but it arrives
+ * from outside the app, so it is matched against the profile rather than
+ * handed to `findLinkById`, which throws on an id it does not know.
+ */
+function initialSelectedId(): string {
+  const fallback = profile.links[0]?.id ?? '';
+  const requested = new URLSearchParams(window.location.search).get('code');
+  return profile.links.some((link) => link.id === requested)
+    ? (requested ?? fallback)
+    : fallback;
+}
+
 export default function App() {
-  const [selectedId, setSelectedId] = useState(
-    () => profile.links[0]?.id ?? '',
-  );
+  const [selectedId, setSelectedId] = useState(initialSelectedId);
 
   return (
     <Box
@@ -24,7 +38,12 @@ export default function App() {
       sx={{ backgroundColor: 'background.default', minHeight: '100dvh', py: 4 }}
     >
       <Container maxWidth="md">
-        <Stack direction="row" sx={{ mb: 2, justifyContent: 'flex-end' }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ mb: 2, justifyContent: 'flex-end', alignItems: 'center' }}
+        >
+          <InstallButton />
           <ColorSchemeToggle />
         </Stack>
 
@@ -67,6 +86,8 @@ export default function App() {
           )}
         </Card>
       </Container>
+
+      <ServiceWorkerPrompts />
     </Box>
   );
 }
