@@ -18,7 +18,7 @@ import { theme } from './theme';
 
 // Keeps the tab title in step with profile.ts rather than duplicating the
 // name into index.html.
-document.title = `${profile.name} — contact card`;
+document.title = `${profile.name}`;
 
 const container = document.getElementById('root');
 if (!container) {
