@@ -1,5 +1,13 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
+import { externalLinkProps } from '../lib/externalLink';
 import type { ProfileLink } from '../types';
-import { PlatformIcon, QrGlyph } from './PlatformIcon';
+import { PlatformIcon } from './PlatformIcon';
 
 interface LinkRowProps {
   readonly link: ProfileLink;
@@ -7,33 +15,44 @@ interface LinkRowProps {
   readonly onSelect: (id: string) => void;
 }
 
+/**
+ * The row's primary action selects — tapping it puts this code on show, which
+ * is what the page is for. Opening the destination is the secondary action, so
+ * it gets the trailing icon button, per Material's list anatomy.
+ */
 export function LinkRow({ link, isSelected, onSelect }: LinkRowProps) {
   return (
-    <li className="link-row" data-selected={isSelected}>
-      <a
-        className="link-row__open"
-        href={link.url}
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        <span className="link-row__icon">
-          <PlatformIcon platform={link.platform} />
-        </span>
-        <span className="link-row__text">
-          <span className="link-row__label">{link.label}</span>
-          <span className="link-row__handle">{link.handle}</span>
-        </span>
-      </a>
-
-      <button
-        type="button"
-        className="link-row__code"
-        aria-pressed={isSelected}
+    <ListItem
+      disablePadding
+      secondaryAction={
+        <Tooltip title={`Open ${link.label}`}>
+          <IconButton
+            edge="end"
+            {...externalLinkProps(link.url)}
+            component="a"
+            aria-label={`Open ${link.label} in a new tab`}
+          >
+            <OpenInNewIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      }
+    >
+      <ListItemButton
+        selected={isSelected}
         onClick={() => onSelect(link.id)}
+        aria-label={`Show the ${link.label} code`}
+        // `selected` is only a tint; this is what says so to a screen reader.
+        aria-current={isSelected}
       >
-        <QrGlyph />
-        <span className="visually-hidden">Show the {link.label} code</span>
-      </button>
-    </li>
+        <ListItemIcon sx={{ color: isSelected ? 'primary.main' : undefined }}>
+          <PlatformIcon platform={link.platform} />
+        </ListItemIcon>
+        <ListItemText
+          primary={link.label}
+          secondary={link.handle}
+          slotProps={{ secondary: { noWrap: true } }}
+        />
+      </ListItemButton>
+    </ListItem>
   );
 }

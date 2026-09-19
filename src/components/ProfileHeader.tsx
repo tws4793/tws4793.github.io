@@ -1,5 +1,10 @@
+import PlaceIcon from '@mui/icons-material/Place';
+import Avatar from '@mui/material/Avatar';
+import CardHeader from '@mui/material/CardHeader';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import type { Profile } from '../types';
-import './ProfileHeader.css';
 
 interface ProfileHeaderProps {
   readonly profile: Profile;
@@ -7,10 +12,44 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
   return (
-    <header className="profile">
-      <h1 className="profile__name">{profile.name}</h1>
-      <p className="profile__tagline">{profile.tagline}</p>
-      <p className="profile__location">{profile.location}</p>
-    </header>
+    <CardHeader
+      avatar={
+        <Avatar
+          aria-hidden
+          sx={{ bgcolor: 'primary.main', width: 56, height: 56 }}
+        >
+          {initials(profile.name)}
+        </Avatar>
+      }
+      title={
+        <Typography variant="h5" component="h1">
+          {profile.name}
+        </Typography>
+      }
+      subheader={
+        <Stack spacing={1} sx={{ mt: 0.5, alignItems: 'flex-start' }}>
+          <Typography variant="body2" color="text.secondary">
+            {profile.tagline}
+          </Typography>
+          <Chip
+            size="small"
+            variant="outlined"
+            icon={<PlaceIcon />}
+            label={profile.location}
+          />
+        </Stack>
+      }
+    />
   );
+}
+
+/**
+ * Up to two initials for the avatar, from the first and last word of the name.
+ * A photo would be better, but the profile deliberately carries no image.
+ */
+function initials(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  const first = words.at(0)?.[0] ?? '';
+  const last = words.length > 1 ? (words.at(-1)?.[0] ?? '') : '';
+  return (first + last).toUpperCase();
 }

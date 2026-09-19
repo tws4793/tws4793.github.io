@@ -23,9 +23,16 @@ export const profile: Profile = {
       url: 'https://t.me/tws4793',
     },
     {
-      id: 'email',
+      id: 'work',
       platform: 'email',
-      label: 'Email',
+      label: 'Business Email',
+      handle: 'weishen.teo@stengg.com',
+      url: 'mailto:weishen.teo@stengg.com',
+    },
+    {
+      id: 'personal',
+      platform: 'email',
+      label: 'Personal Email',
       handle: 'tws4793@gmail.com',
       url: 'mailto:tws4793@gmail.com',
     },
@@ -46,9 +53,16 @@ export const profile: Profile = {
     {
       id: 'photography',
       platform: 'instagram',
-      label: 'Photography',
+      label: 'Photography Instagram',
       handle: '@tws.cr3',
       url: 'https://instagram.com/tws.cr3',
+    },
+    {
+      id: 'personal-instagram',
+      platform: 'instagram',
+      label: 'Personal Instagram',
+      handle: '@tws4793',
+      url: 'https://instagram.com/tws4793',
     },
   ],
 };
