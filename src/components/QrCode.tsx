@@ -1,5 +1,4 @@
 import { QRCodeSVG } from 'qrcode.react';
-import './QrCode.css';
 
 interface QrCodeProps {
   /** The URL encoded into the code. */
@@ -15,7 +14,6 @@ interface QrCodeProps {
 export function QrCode({ value, title }: QrCodeProps) {
   return (
     <QRCodeSVG
-      className="qr-code"
       value={value}
       title={title}
       size={256}
@@ -23,6 +21,7 @@ export function QrCode({ value, title }: QrCodeProps) {
       marginSize={0}
       bgColor="transparent"
       fgColor="currentColor"
+      style={{ display: 'block', inlineSize: '100%', blockSize: 'auto' }}
     />
   );
 }

@@ -1,6 +1,12 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { externalLinkProps } from '../lib/externalLink';
 import type { ProfileLink } from '../types';
 import { QrCode } from './QrCode';
-import './QrPanel.css';
 
 interface QrPanelProps {
   readonly link: ProfileLink;
@@ -8,34 +14,53 @@ interface QrPanelProps {
 
 export function QrPanel({ link }: QrPanelProps) {
   return (
-    <section className="qr-panel" aria-label="Code on show">
-      <div className="qr-panel__paper">
-        <div className="qr-panel__body">
-          {/* Remounting on id change replays the swap animation. */}
-          <div className="qr-panel__code" key={link.id}>
-            <QrCode
-              value={link.url}
-              title={`${link.label} code for ${link.handle}`}
-            />
-          </div>
+    <Stack component="section" aria-label="Code on show" spacing={2}>
+      <Paper
+        variant="outlined"
+        sx={{
+          alignSelf: 'center',
+          p: 2,
+          /*
+            Fixed, not themed: a decoder needs dark modules on a light quiet
+            zone, so this stays a light surface in both colour schemes.
+          */
+          backgroundColor: 'common.white',
+          color: 'common.black',
+          borderColor: 'divider',
+        }}
+      >
+        <Box sx={{ width: { xs: 180, sm: 208 } }}>
+          <QrCode
+            value={link.url}
+            title={`${link.label} code for ${link.handle}`}
+          />
+        </Box>
+      </Paper>
 
-          <div className="qr-panel__meta" aria-live="polite">
-            <p className="qr-panel__platform">{link.label}</p>
-            <p className="qr-panel__handle">{link.handle}</p>
-          </div>
-        </div>
+      <Stack spacing={0.5} sx={{ textAlign: 'center' }} aria-live="polite">
+        <Typography variant="subtitle1">{link.label}</Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ overflowWrap: 'anywhere' }}
+        >
+          {link.handle}
+        </Typography>
+      </Stack>
 
-        <p className="qr-panel__help">Point a phone camera at the code.</p>
-      </div>
-
-      <a
-        className="qr-panel__open"
-        href={link.url}
-        target="_blank"
-        rel="noreferrer noopener"
+      <Button
+        component="a"
+        {...externalLinkProps(link.url)}
+        variant="contained"
+        endIcon={<OpenInNewIcon />}
+        fullWidth
       >
         Open {link.label}
-      </a>
-    </section>
+      </Button>
+
+      <Typography variant="caption" color="text.secondary" align="center">
+        Point a phone camera at the code.
+      </Typography>
+    </Stack>
   );
 }
