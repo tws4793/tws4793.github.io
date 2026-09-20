@@ -14,6 +14,15 @@ export const en = {
     open: 'Open {{label}}',
     hint: 'Point a phone camera at the code.',
   },
+  contact: {
+    /*
+      The code is the point; the button is the fallback for whoever is already
+      holding the device the code is on. The label of the row itself lives in
+      `profile.ts`, next to the details it names.
+    */
+    save: 'Save contact',
+    hint: 'Scan the code to add me to your contacts, or save the file.',
+  },
   empty: {
     /*
       <code> wraps the filename. A named tag rather than a numbered one, so a

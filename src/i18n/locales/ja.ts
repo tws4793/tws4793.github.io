@@ -12,6 +12,10 @@ export const ja: Translation = {
     open: '{{label}}を開く',
     hint: 'スマートフォンのカメラでコードを読み取ってください。',
   },
+  contact: {
+    save: '連絡先を保存',
+    hint: 'コードを読み取って連絡先に追加するか、ファイルを保存してください。',
+  },
   empty: {
     message:
       '<code>{{file}}</code> に最初のリンクを追加すると、コードとともにここに表示されます。',

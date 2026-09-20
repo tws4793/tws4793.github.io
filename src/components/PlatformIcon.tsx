@@ -1,3 +1,4 @@
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -20,6 +21,7 @@ const ICONS: Record<Platform, SvgIconComponent> = {
   github: GitHubIcon,
   email: EmailIcon,
   website: LanguageIcon,
+  contact: ContactPageIcon,
 };
 
 interface PlatformIconProps extends SvgIconProps {

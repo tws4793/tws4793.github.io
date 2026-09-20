@@ -12,6 +12,10 @@ export const zh: Translation = {
     open: '打开{{label}}',
     hint: '用手机相机扫描二维码。',
   },
+  contact: {
+    save: '保存联系人',
+    hint: '扫描二维码即可把我加入通讯录，或直接保存名片文件。',
+  },
   empty: {
     message:
       '在 <code>{{file}}</code> 中添加第一个链接，它会连同二维码一起显示在这里。',

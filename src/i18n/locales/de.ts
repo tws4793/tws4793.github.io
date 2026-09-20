@@ -12,6 +12,10 @@ export const de: Translation = {
     open: '{{label}} öffnen',
     hint: 'Richten Sie die Handykamera auf den Code.',
   },
+  contact: {
+    save: 'Kontakt speichern',
+    hint: 'Code scannen, um mich zu den Kontakten hinzuzufügen, oder die Datei speichern.',
+  },
   empty: {
     message:
       'Fügen Sie Ihren ersten Link in <code>{{file}}</code> hinzu, und er erscheint hier mit eigenem Code.',

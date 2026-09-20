@@ -1,7 +1,8 @@
 # tws4793.github.io
 
 A personal contact card. One page, one row per way to reach me, and a
-scannable code for each, in eight languages. Built with Vite, React, TypeScript
+scannable code for each — including a vCard that scans straight into a phone's
+address book — in eight languages. Built with Vite, React, TypeScript
 and Material UI, and installable as a progressive web app that works with no
 network at all.
 
@@ -45,6 +46,10 @@ Order is the design. Contact channels come first — how someone reaches you —
 then proof, how someone checks you out. The first entry is the code shown when
 the page opens, so it should be whichever one you scan at people.
 
+The `contact` block is the vCard: the details a scanner writes into an address
+book. Delete it and the card goes back to being links only. Everything else in
+the file is a link.
+
 `label` and `handle` are separate fields on purpose. The label can say what the
 destination is _for_ rather than what the platform is called: a photography
 Instagram reads better as **Photography** than as **Instagram**, and it tells a
@@ -54,8 +59,9 @@ Adding a platform means adding it to the `Platform` union in `src/types.ts`
 _and_ mapping it to an icon in `src/components/PlatformIcon.tsx`. TypeScript
 will refuse to build until you do both, which is intended.
 
-`tagline`, `location` and a link's `label` each take either a plain string or
-one string per language — see [Languages](#languages).
+`tagline`, `location`, a link's `label`, and the contact block's `label` and
+`title` each take either a plain string or one string per language — see
+[Languages](#languages).
 
 Link URLs are checked against an allowlist of schemes — `https:`, `mailto:`
 and `tel:` — in `src/lib/externalLink.ts`. A typo or a pasted `javascript:`
@@ -118,6 +124,37 @@ Every `href` on the page is built by `externalLinkProps` in
 it once means a new row cannot forget either. A `javascript:` or `data:` URL —
 or a plain typo — throws on render rather than reaching an attribute.
 
+### The contact card
+
+The first row is not a link. It carries a [vCard 3.0][vcard] — name, job
+title, company and department, a mobile number, both email addresses, and a
+`URL` back to this page — and scanning it offers to save all of that as a
+contact rather than to open anything. `src/lib/vcard.ts` builds the text; `src/lib/entries.ts` puts it
+in the same list as the links so the row, the code panel and the manifest can
+treat the two alike.
+
+Version 3.0 rather than the newer 4.0 because 3.0 is what every phone camera,
+scanner app and address book agrees on, and a contact that fails to import is
+worth nothing. The values are escaped as RFC 2426 asks — which matters as soon
+as a department has a comma in it, as this one does.
+
+The card stays short on purpose. A QR code grows with its payload, and the
+`URL` line means it does not have to carry every link: the vCard runs to 61
+modules, or 65 in the languages that spell the job title in their own script,
+where a link's code runs to 29 — and that is already most of the width a phone
+screen can spare. For the same reason the contact code drops to
+error-correction level `L` where the links use `M` — the 15% redundancy exists
+for print that creases and smudges, and a lit screen held up for a second does
+neither.
+
+The button below the code saves the same vCard as a `.vcf` file. It is there
+for whoever is reading the page on the very device the code is on and so has
+nothing to point a camera at. Its `blob:` URL is built in `vcard.ts` rather
+than passed through `externalLinkProps`, which refuses that scheme for the
+reason above; this one is minted from our own data a line earlier.
+
+[vcard]: https://datatracker.ietf.org/doc/html/rfc2426
+
 ## Languages
 
 The card speaks English, Mandarin, Malay and Tamil — Singapore's four official
@@ -174,6 +211,13 @@ and English are Latin-script and need nothing.
 A dash in that table is not an omission to fix later: it means the language is
 simply left out of the `label` object and falls back to the Latin name, which
 is the right answer when inventing one would be worse.
+
+The same judgement decides what the vCard carries. A job title has a settled
+form in these languages, so `title` is translated and the saved contact reads
+in whichever language the card was open in. A company's registered name and
+its internal departments do not, so `organisation` and `department` are
+written once, as registered, and stay that way in all eight — translating them
+would mean inventing names that appear on no name card.
 
 Handles are never translated. `@tws4793` is an identifier, not a word.
 
@@ -267,12 +311,13 @@ nothing left to say so.
 
 `vite.config.ts` imports the profile and builds the manifest from it, so the
 installed app's name, description and shortcuts cannot drift from the page.
-The first four links become launcher shortcuts pointing at `./?code=<id>`, so
-a long-press on the installed icon goes straight to a particular code.
+The first four entries become launcher shortcuts pointing at `./?code=<id>`, so
+a long-press on the installed icon goes straight to a particular code — the
+contact card among them, since it leads the list.
 
 That parameter arrives from outside the app, so `App` matches it against the
-profile rather than passing it to `findLinkById`, which throws on an id it does
-not recognise. An unknown or hostile `?code=` falls back to the first link.
+list rather than passing it to `findEntryById`, which throws on an id it does
+not recognise. An unknown or hostile `?code=` falls back to the first entry.
 
 ### Installing
 

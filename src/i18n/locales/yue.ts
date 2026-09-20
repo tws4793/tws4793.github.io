@@ -19,6 +19,10 @@ export const yue: Translation = {
     open: '開{{label}}',
     hint: '用手機鏡頭掃呢個二維碼。',
   },
+  contact: {
+    save: '儲存聯絡人',
+    hint: '掃描二維碼就可以將我加入通訊錄，或者直接儲存名片檔案。',
+  },
   empty: {
     message:
       '喺 <code>{{file}}</code> 入面加你第一個連結，佢就會連埋二維碼喺度顯示。',
