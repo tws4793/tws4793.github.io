@@ -11,22 +11,29 @@ import { Trans } from 'react-i18next';
 import { ColorSchemeToggle } from './components/ColorSchemeToggle';
 import { InstallButton } from './components/InstallButton';
 import { LanguageMenu } from './components/LanguageMenu';
-import { LinkList } from './components/LinkList';
+import { EntryList } from './components/EntryList';
 import { ProfileHeader } from './components/ProfileHeader';
 import { QrPanel } from './components/QrPanel';
 import { ServiceWorkerPrompts } from './components/ServiceWorkerPrompts';
-import { findLinkById, profile } from './data/profile';
+import { profile } from './data/profile';
+import { entriesOf, findEntryById } from './lib/entries';
+
+/*
+  Built once, outside the component: the profile is a module constant, so the
+  list it derives never changes between renders.
+*/
+const entries = entriesOf(profile);
 
 /**
  * Which code to show on open. The manifest's launcher shortcuts point at
  * `./?code=<id>`, so that parameter picks the starting code — but it arrives
- * from outside the app, so it is matched against the profile rather than
- * handed to `findLinkById`, which throws on an id it does not know.
+ * from outside the app, so it is matched against the list rather than handed
+ * to `findEntryById`, which throws on an id it does not know.
  */
 function initialSelectedId(): string {
-  const fallback = profile.links[0]?.id ?? '';
+  const fallback = entries[0]?.id ?? '';
   const requested = new URLSearchParams(window.location.search).get('code');
-  return profile.links.some((link) => link.id === requested)
+  return entries.some((entry) => entry.id === requested)
     ? (requested ?? fallback)
     : fallback;
 }
@@ -54,13 +61,13 @@ export default function App() {
           <ProfileHeader profile={profile} />
           <Divider />
 
-          {profile.links.length === 0 ? (
+          {entries.length === 0 ? (
             <EmptyState />
           ) : (
             <Grid container>
               <Grid size={{ xs: 12, md: 5 }}>
                 <CardContent>
-                  <QrPanel link={findLinkById(selectedId)} />
+                  <QrPanel entry={findEntryById(entries, selectedId)} />
                 </CardContent>
               </Grid>
 
@@ -78,8 +85,8 @@ export default function App() {
                 }}
               >
                 <Box sx={{ py: 1 }}>
-                  <LinkList
-                    links={profile.links}
+                  <EntryList
+                    entries={entries}
                     selectedId={selectedId}
                     onSelect={setSelectedId}
                   />

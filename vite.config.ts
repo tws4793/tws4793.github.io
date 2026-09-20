@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { entriesOf } from './src/lib/entries';
 import { localise } from './src/lib/localise';
 import { profile } from './src/data/profile';
 
@@ -19,22 +20,27 @@ const shortName =
 /*
   Long-press shortcuts into a specific code. Most launchers show at most four,
   and the order in profile.ts is already "most useful first", so the top four
-  are the right four. `App` validates the `code` parameter against the profile
-  before trusting it.
+  are the right four. `App` validates the `code` parameter against the same
+  list before trusting it.
 
   A manifest is written once at build time and cannot follow the language the
   visitor later picks, so these are English — the profile's mandatory
   fallback — whatever else the card is translated into.
 */
-const shortcuts = profile.links.slice(0, 4).map((link) => {
-  const label = localise(link.label, 'en');
-  return {
-    name: `${label} code`,
-    short_name: label,
-    description: `Show the code for ${link.handle}`,
-    url: `./?code=${encodeURIComponent(link.id)}`,
-  };
-});
+const shortcuts = entriesOf(profile)
+  .slice(0, 4)
+  .map((entry) => {
+    const label = localise(entry.label, 'en');
+    return {
+      name: `${label} code`,
+      short_name: label,
+      description:
+        entry.kind === 'contact'
+          ? `Show the code that saves ${profile.name} to your contacts`
+          : `Show the code for ${entry.handle}`,
+      url: `./?code=${encodeURIComponent(entry.id)}`,
+    };
+  });
 
 // `base: './'` keeps asset URLs relative so the built site works when served
 // from a sub-path (GitHub Pages project sites, for example). `start_url` and

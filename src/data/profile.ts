@@ -1,11 +1,12 @@
-import type { Profile, ProfileLink } from '../types';
+import type { Profile } from '../types';
 
 /*
   The only file you need to edit to make the page yours.
 
-  Order is the design. Contact channels first (how someone reaches you), then
-  proof (how someone checks you out). The first entry is the code shown when
-  the page opens, so it should be the one you scan at people.
+  Order is the design. The contact card first (everything about you, in one
+  scan), then contact channels (how someone reaches you), then proof (how
+  someone checks you out). The first entry is the code shown when the page
+  opens, so it should be the one you scan at people.
 
   Replace every PLACEHOLDER below before deploying.
 
@@ -41,6 +42,46 @@ export const profile: Profile = {
     ja: 'シンガポール',
     de: 'Singapur',
     fr: 'Singapour',
+  },
+  /*
+    The details a scanner writes straight into an address book. Remove this
+    block and the card goes back to being links only.
+
+    The job title is translated where the language has a settled way of saying
+    it — the same renderings the tagline above uses. The company and the
+    department are not: they are a registered name and an internal unit, and
+    neither has a translation that anyone would recognise on a name card.
+  */
+  contact: {
+    firstName: 'Wei Shen',
+    lastName: 'Teo',
+    label: {
+      en: 'Contact card',
+      zh: '名片',
+      ms: 'Kad nama',
+      ta: 'தொடர்பு அட்டை',
+      yue: '名片',
+      ja: '名刺',
+      de: 'Visitenkarte',
+      fr: 'Carte de visite',
+    },
+    title: {
+      en: 'Senior Software Engineer',
+      zh: '高级软件工程师',
+      ms: 'Jurutera Perisian Kanan',
+      ta: 'மூத்த மென்பொருள் பொறியாளர்',
+      yue: '高級軟件工程師',
+      ja: 'シニアソフトウェアエンジニア',
+      fr: 'Ingénieur logiciel senior',
+    },
+    organisation: 'ST Engineering IHQ Pte. Ltd.',
+    department: 'Data Analytics, Group Engineering Centre',
+    phones: [{ kind: 'cell', number: '+6597391300' }],
+    emails: [
+      { kind: 'work', address: 'weishen.teo@stengg.com' },
+      { kind: 'home', address: 'tws4793@gmail.com' },
+    ],
+    url: 'https://tws4793.github.io/',
   },
   links: [
     {
@@ -145,11 +186,3 @@ export const profile: Profile = {
     },
   ],
 };
-
-export function findLinkById(id: string): ProfileLink {
-  const match = profile.links.find((link) => link.id === id);
-  if (!match) {
-    throw new Error(`No link in profile.ts has the id "${id}".`);
-  }
-  return match;
-}

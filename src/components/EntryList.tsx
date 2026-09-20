@@ -1,16 +1,16 @@
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import { useLocale } from '../lib/useLocale';
-import type { ProfileLink } from '../types';
-import { LinkRow } from './LinkRow';
+import type { CardEntry } from '../types';
+import { EntryRow } from './EntryRow';
 
-interface LinkListProps {
-  readonly links: readonly ProfileLink[];
+interface EntryListProps {
+  readonly entries: readonly CardEntry[];
   readonly selectedId: string;
   readonly onSelect: (id: string) => void;
 }
 
-export function LinkList({ links, selectedId, onSelect }: LinkListProps) {
+export function EntryList({ entries, selectedId, onSelect }: EntryListProps) {
   const { t } = useLocale();
 
   return (
@@ -22,11 +22,11 @@ export function LinkList({ links, selectedId, onSelect }: LinkListProps) {
         <ListSubheader disableSticky>{t('nav.whereToFindMe')}</ListSubheader>
       }
     >
-      {links.map((link) => (
-        <LinkRow
-          key={link.id}
-          link={link}
-          isSelected={link.id === selectedId}
+      {entries.map((entry) => (
+        <EntryRow
+          key={entry.id}
+          entry={entry}
+          isSelected={entry.id === selectedId}
           onSelect={onSelect}
         />
       ))}

@@ -12,6 +12,10 @@ export const ms: Translation = {
     open: 'Buka {{label}}',
     hint: 'Halakan kamera telefon ke arah kod ini.',
   },
+  contact: {
+    save: 'Simpan kenalan',
+    hint: 'Imbas kod untuk menambah saya ke senarai kenalan anda, atau simpan failnya.',
+  },
   empty: {
     message:
       'Tambah pautan pertama anda dalam <code>{{file}}</code> dan ia akan muncul di sini dengan kodnya sendiri.',
