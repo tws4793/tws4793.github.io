@@ -1,0 +1,38 @@
+version: 2
+
+updates:
+  # `npm` covers Yarn too: Dependabot reads yarn.lock and updates it in place.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+    groups:
+      # Minor and patch bumps land together as one PR a week rather than a
+      # dozen. Majors stay separate, since those are the ones that need a
+      # read of the changelog.
+      minor-and-patch:
+        update-types: [minor, patch]
+      # MUI's packages share one version line and break together, so a major
+      # moves them as a set rather than leaving the icons a version behind.
+      mui:
+        patterns: ['@mui/*']
+        update-types: [major]
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+        update-types: [major]
+
+  # Keeps the deploy workflow's actions (checkout, setup-node, gh-pages)
+  # current.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']

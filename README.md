@@ -365,6 +365,13 @@ setting for you, so the first deploy will appear to do nothing until you do.
 `vite.config.ts` sets `base: './'`, so the build works from a sub-path as well
 as from the domain root.
 
+### Dependency updates
+
+`.github/dependabot.yml` checks weekly for updates to the npm packages and to
+the workflow's actions. Minor and patch bumps arrive grouped as one pull
+request; majors come one at a time (MUI's packages and React's as a set),
+because those are the ones worth reading the changelog for.
+
 If the old version of this repo had a `CNAME` file for a custom domain, copy it
 into `public/` — Vite passes that directory through to `dist/` untouched, and
 without it the deploy will drop the domain.
