@@ -355,12 +355,12 @@ scan.
 ## Deployment
 
 `.github/workflows/deploy.yml` runs on every push to `main`: install, format
-check, type check, build, then publish `dist/` to the **`gh-pages`** branch via
-`peaceiris/actions-gh-pages`.
+check, type check and build, then uploads `dist/` and deploys it with GitHub's
+own `actions/deploy-pages`. No branch is written, and the build job has
+read-only access to the repository.
 
-**One-time setup:** Settings → Pages → Source: _Deploy from a branch_ →
-`gh-pages` / `root`. The workflow writes the branch but cannot flip that
-setting for you, so the first deploy will appear to do nothing until you do.
+**One-time setup:** Settings → Pages → Source: **GitHub Actions**. Until that
+is set, the deploy step fails.
 
 `vite.config.ts` sets `base: './'`, so the build works from a sub-path as well
 as from the domain root.

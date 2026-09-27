@@ -5,18 +5,22 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# peaceiris/actions-gh-pages pushes a commit to gh-pages, so the job needs
-# write access to repository contents.
+# Nothing is pushed to the repository: the build is uploaded as an artifact
+# and handed to Pages directly. `id-token` lets deploy-pages prove to Pages
+# that the artifact came from this workflow.
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
-# A superseded deploy is never worth finishing.
+# A newer push still supersedes an older one, but a deploy already under way
+# is left to finish: cancelling one midway can leave Pages half-published.
 concurrency:
   group: pages-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -50,14 +54,22 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Publish to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      # Artifact deploys skip Jekyll entirely, so no .nojekyll is needed.
+      - name: Upload the build
+        uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          # Adds .nojekyll, so GitHub serves the built assets untouched.
-          enable_jekyll: false
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: 'deploy: ${{ github.sha }}'
+          path: ./dist
+
+  # Split from the build so that the job running `yarn install` — and with it
+  # every dependency's code — never holds the right to deploy.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
