@@ -2449,10 +2449,10 @@ html-parse-stringify@^4.0.1:
   resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-4.0.1.tgz#7264be901df0fef8829eb04632191be0aa94f55e"
   integrity sha512-0zHsZJrK7S3K2aucXWL6ycoYJ/iNtIcFHC/nYQgFklPtrv5LpJctIiSCroWZWeuoXvuyFdzp6KzjJQ+OT5MfFw==
 
-i18next-browser-languagedetector@^8.3.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.3.0.tgz#92bdc1003e4cbec36c3205eccd47edce39f896d7"
-  integrity sha512-t7FtF+VyQ+XSy+GI1O9TXWsMzP4U2u0m27yxJcCbG4LaAbTQa3CXFXgG3LvRivS+ZoYah8yPv5NhMl+Wg6I8Fg==
+i18next-browser-languagedetector@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.3.1.tgz#5197f2df07fdd48c128a0517707cf81ac3ed0f3a"
+  integrity sha512-W7dfKWlmaxuy5zsKsu8vKm7SQ0R6T1Tw7XRMKCh3bt98q9m5Q73GKF1PiqtvcwzC+AZvfUCugbfcIYQkDfHeAg==
   dependencies:
     "@babel/runtime" "^7.29.2"
 
@@ -3021,10 +3021,10 @@ postcss@^8.5.32:
     picocolors "^1.1.1"
     source-map-js "^1.2.2"
 
-prettier@^3.9.10:
-  version "3.9.10"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.9.10.tgz#ac378e432f1a7381518f2e080816bbaefa38d585"
-  integrity sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==
+prettier@^3.10.1:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.10.1.tgz#00b1c1872f9650ec22093d5bdafdca0fe6760f77"
+  integrity sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"
